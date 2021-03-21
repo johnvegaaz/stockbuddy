@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Stock Buddy</title>
+    <link rel="icon" href="./img/favicon.ico" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0"
+      crossorigin="anonymous"
+    ></script>
+    <script src="main.js"></script>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="index.html">Stock Buddy</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNavAltMarkup"
+          aria-controls="navbarNavAltMarkup"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+          <div class="navbar-nav">
+            <a class="nav-link active" aria-current="page" href="index.html"
+              >Home</a
+            >
+            <a class="nav-link" href="#">About</a>
+            <a class="nav-link" href="#">Suggestions</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <div class="container">
+      <form>
+        <div class="row justify-content-md-center" id="keyTickerForm">
+          <div class="col-6">
+            <label for="inputPassword5" class="form-label"
+              >Alpha Vantage API Key</label
+            >
+            <input
+              type="password"
+              id="keyForm"
+              class="form-control"
+              aria-describedby="passwordHelpBlock"
+              required
+            />
+            <div id="passwordHelpBlock" class="form-text">
+              You can sign up for a free API key
+              <a
+                href="https://www.alphavantage.co/support/#api-key"
+                target="_blank"
+                >here.</a
+              >
+              Note: You will be limited to 5 requests per minute.
+            </div>
+          </div>
+          <div class="col-4">
+            <label for="formGroupExampleInput2" class="form-label"
+              >Ticker Symbol</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              id="tickerForm"
+              placeholder="SPY, TSLA, etc."
+              required
+            />
+          </div>
+        </div>
+        <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+          <!--Button to Launch Rocket-->
+          <button
+            type="button"
+            class="btn btn-success"
+            id="launchButton"
+            onclick="buttonSubmit()"
+          >
+            Launch Rocket
+          </button>
+        </div>
+      </form>
+      <div id="output">
+        <table id="table" class="table" hidden>
+          <thead>
+            <tr>
+              <th scope="col">Date</th>
+              <th scope="col">Open</th>
+              <th scope="col">Close</th>
+              <th scope="col">Volume</th>
+            </tr>
+          </thead>
+          <tbody id="outputTable"></tbody>
+        </table>
+      </div>
+    </div>
+  </body>
+</html>
