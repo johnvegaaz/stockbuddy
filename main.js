@@ -28,7 +28,8 @@ function performFetch(ticker, key) {
   if (performCheck(returnVal(ticker), returnVal(key))) {
     fetch(returnCallUrl(returnVal(ticker), returnVal(key)))
       .then((response) => response.json())
-      .then((data) => responseHandle(data));
+      .then((data) => responseHandle(data))
+      .then(() => (document.getElementById("output").scrollTop = 0));
   }
 }
 
@@ -38,7 +39,7 @@ function responseHandle(resObj) {
   loopData(resObj);
 }
 
-function loopData(data) {
+async function loopData(data) {
   let seriesType = Object.keys(data)[1];
   destroyChildren(tableId);
   for (item in data[seriesType]) {
@@ -50,7 +51,7 @@ function loopData(data) {
     let volume = data[seriesType][item]["5. volume"];
     appendTrRow(tableId, date, open, close, volume);
   }
-  document.getElementById("table").removeAttribute("hidden");
+  document.getElementById("tableDisplayButton").removeAttribute("hidden");
 }
 
 function createTableChild(date, open, close, volume) {
@@ -79,12 +80,38 @@ function appendTrRow(tableId, date, open, close, volume) {
 }
 
 function buttonSubmit() {
-  performFetch(tickerId, keyId);
+  progressBarUpdate(progressId);
+}
+
+function tableToggle() {
+  let hiddenTable = document.getElementById("table");
+  let toggleButton = document.getElementById("tableDisplayButton");
+  if (hiddenTable.hasAttribute("hidden")) {
+    hiddenTable.hidden = false;
+    toggleButton.className = "btn btn-danger";
+    toggleButton.innerHTML = "Hide Table";
+  } else {
+    hiddenTable.hidden = true;
+    toggleButton.className = "btn btn-primary";
+    toggleButton.innerHTML = "Display Table";
+  }
 }
 
 let tickerId = "tickerForm";
 let keyId = "keyForm";
 let tableId = "outputTable";
+let progressId = "progressElement";
+
+window.onload = function () {
+  let tickerField = document.getElementById(tickerId);
+  if (tickerField) {
+    tickerField.addEventListener("keypress", function (e) {
+      if (e.key === "Enter") {
+        buttonSubmit();
+      }
+    });
+  }
+};
 
 const days = [
   "Sunday",
@@ -102,4 +129,42 @@ Date.prototype.formatMMDDYYYY = function () {
 
 function numberWithCommas(x) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+function progressBarUpdate(elemId) {
+  let hiddenTable = document.getElementById("table");
+  let toggleButton = document.getElementById("tableDisplayButton");
+  hiddenTable.hidden = true;
+  toggleButton.hidden = true;
+  toggleButton.className = "btn btn-primary";
+  toggleButton.innerHTML = "Display Table";
+  let bar = document.getElementById(elemId);
+  let container = document.getElementById("progressToggle");
+  let width = 25;
+  bar.style.width = width + "%";
+  container.hidden = false;
+  bar.innerHTML = "&#128142;&#128080; Polishing diamond hands...";
+  let id = setInterval(frame, 110);
+  function frame() {
+    if (width >= 100) {
+      clearInterval(id);
+      container.hidden = true;
+      performFetch(tickerId, keyId);
+    } else if (width >= 95) {
+      bar.innerHTML = "&#128640;TO THE MOON!";
+      width++;
+      bar.style.width = width + "%";
+    } else if (width >= 75) {
+      bar.innerHTML = "&#128021;Mining Dogecoin...";
+      width++;
+      bar.style.width = width + "%";
+    } else if (width >= 50) {
+      bar.innerHTML = "&#128200;STONKS!!";
+      width++;
+      bar.style.width = width + "%";
+    } else {
+      width++;
+      bar.style.width = width + "%";
+    }
+  }
 }

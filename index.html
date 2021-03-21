@@ -47,54 +47,77 @@
       </div>
     </nav>
     <div class="container">
-      <form>
-        <div class="row justify-content-md-center" id="keyTickerForm">
-          <div class="col-6">
-            <label for="inputPassword5" class="form-label"
-              >Alpha Vantage API Key</label
-            >
-            <input
-              type="password"
-              id="keyForm"
-              class="form-control"
-              aria-describedby="passwordHelpBlock"
-              required
-            />
-            <div id="passwordHelpBlock" class="form-text">
-              You can sign up for a free API key
-              <a
-                href="https://www.alphavantage.co/support/#api-key"
-                target="_blank"
-                >here.</a
-              >
-              Note: You will be limited to 5 requests per minute.
-            </div>
-          </div>
-          <div class="col-4">
-            <label for="formGroupExampleInput2" class="form-label"
-              >Ticker Symbol</label
-            >
-            <input
-              type="text"
-              class="form-control"
-              id="tickerForm"
-              placeholder="SPY, TSLA, etc."
-              required
-            />
-          </div>
-        </div>
-        <div class="d-grid gap-2 d-md-flex justify-content-md-center">
-          <!--Button to Launch Rocket-->
-          <button
-            type="button"
-            class="btn btn-success"
-            id="launchButton"
-            onclick="buttonSubmit()"
+      <div class="row justify-content-md-center" id="keyTickerForm">
+        <div class="col-6">
+          <label for="inputPassword5" class="form-label"
+            >Alpha Vantage API Key</label
           >
-            Launch Rocket
-          </button>
+          <input
+            type="password"
+            id="keyForm"
+            class="form-control"
+            aria-describedby="passwordHelpBlock"
+            tabindex="1"
+            required
+          />
+          <div id="passwordHelpBlock" class="form-text">
+            You can sign up for a free API key
+            <a
+              href="https://www.alphavantage.co/support/#api-key"
+              target="_blank"
+              >here.</a
+            >
+            Note: You will be limited to 5 requests per minute.
+          </div>
         </div>
-      </form>
+        <div class="col-4">
+          <label for="formGroupExampleInput2" class="form-label"
+            >Ticker Symbol</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            id="tickerForm"
+            placeholder="SPY, TSLA, etc."
+            required
+            tabindex="2"
+          />
+        </div>
+      </div>
+      <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+        <!--Button to Launch Rocket-->
+        <button
+          type="button"
+          class="btn btn-success"
+          id="launchButton"
+          onclick="buttonSubmit()"
+          tabindex="3"
+        >
+          Launch Rocket
+        </button>
+      </div>
+      <div class="progress" hidden id="progressToggle">
+        <div
+          id="progressElement"
+          class="progress-bar progress-bar-striped progress-bar-animated"
+          role="progressbar"
+          aria-valuenow="75"
+          aria-valuemin="0"
+          aria-valuemax="100"
+          style="width: 25%"
+        >
+          Polishing diamond hands...
+        </div>
+      </div>
+      <button
+        type="button"
+        class="btn btn-primary"
+        id="tableDisplayButton"
+        onclick="tableToggle()"
+        hidden
+      >
+        Display Table
+      </button>
       <div id="output">
         <table id="table" class="table" hidden>
           <thead>
