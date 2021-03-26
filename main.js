@@ -61,7 +61,12 @@ async function loopData(data) {
   }
 
   document.getElementById("tableDisplayButton").removeAttribute("hidden");
-  return [dateArr, openArr, closeArr, volumeArr];
+  return [
+    dateArr.reverse(),
+    openArr.reverse(),
+    closeArr.reverse(),
+    volumeArr.reverse(),
+  ];
 }
 
 function createTableChild(date, open, close, volume) {
@@ -203,6 +208,9 @@ function chartIt(x, y) {
           label: "Closing Price",
           data: y,
           borderColor: ["rgba(255, 99, 132, 1)"],
+          pointHitRadius: 3,
+          pointStyle: "line",
+          pointRotation: 90,
           borderWidth: 1,
           lineTension: 0,
           fill: false,
