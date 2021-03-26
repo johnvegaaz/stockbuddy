@@ -42,16 +42,26 @@ function responseHandle(resObj) {
 async function loopData(data) {
   let seriesType = Object.keys(data)[1];
   destroyChildren(tableId);
+  let dateArr = [];
+  let openArr = [];
+  let closeArr = [];
+  let volumeArr = [];
   for (item in data[seriesType]) {
     //console.log(data[seriesType][date]);
     //console.log(date);
     let date = new Date(item + "T00:00:00");
+    dateArr.push(date.formatMMDDYYYY());
     let open = data[seriesType][item]["1. open"];
+    openArr.push(open);
     let close = data[seriesType][item]["4. close"];
+    closeArr.push(close);
     let volume = data[seriesType][item]["5. volume"];
+    volumeArr.push(volume);
     appendTrRow(tableId, date, open, close, volume);
   }
+
   document.getElementById("tableDisplayButton").removeAttribute("hidden");
+  return [dateArr, openArr, closeArr, volumeArr];
 }
 
 function createTableChild(date, open, close, volume) {
@@ -131,6 +141,22 @@ function numberWithCommas(x) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
+async function executePull() {
+  const response = await fetch(
+    returnCallUrl(returnVal(tickerId), returnVal(keyId))
+  );
+  const data = await response.json();
+  //Not the best idea but I want to push the appropriate values into arrays from the loopData function, later on I will add in a better higher order array function/method
+  let [dateArr, openArr, closeArr, volumeArr] = await loopData(data);
+  console.log(data);
+  console.log(dateArr);
+  console.log(openArr);
+  console.log(closeArr);
+  console.log(volumeArr);
+
+  chartIt(dateArr, closeArr);
+}
+
 function progressBarUpdate(elemId) {
   let hiddenTable = document.getElementById("table");
   let toggleButton = document.getElementById("tableDisplayButton");
@@ -141,30 +167,58 @@ function progressBarUpdate(elemId) {
   let bar = document.getElementById(elemId);
   let container = document.getElementById("progressToggle");
   let width = 25;
-  bar.style.width = width + "%";
+  bar.style.width = 100 + "%";
   container.hidden = false;
   bar.innerHTML = "&#128142;&#128080; Polishing diamond hands...";
   let id = setInterval(frame, 110);
   function frame() {
     if (width >= 100) {
       clearInterval(id);
+      executePull();
       container.hidden = true;
-      performFetch(tickerId, keyId);
     } else if (width >= 95) {
       bar.innerHTML = "&#128640;TO THE MOON!";
       width++;
-      bar.style.width = width + "%";
     } else if (width >= 75) {
       bar.innerHTML = "&#128021;Mining Dogecoin...";
       width++;
-      bar.style.width = width + "%";
     } else if (width >= 50) {
       bar.innerHTML = "&#128200;STONKS!!";
       width++;
-      bar.style.width = width + "%";
     } else {
       width++;
-      bar.style.width = width + "%";
     }
   }
+}
+
+//CHART STUFF
+function chartIt(x, y) {
+  var ctx = document.getElementById("myChart").getContext("2d");
+  var myChart = new Chart(ctx, {
+    type: "line",
+    data: {
+      labels: x,
+      datasets: [
+        {
+          label: "Closing Price",
+          data: y,
+          borderColor: ["rgba(255, 99, 132, 1)"],
+          borderWidth: 1,
+          lineTension: 0,
+          fill: false,
+        },
+      ],
+    },
+    options: {
+      scales: {
+        yAxes: [
+          {
+            ticks: {
+              beginAtZero: false,
+            },
+          },
+        ],
+      },
+    },
+  });
 }
