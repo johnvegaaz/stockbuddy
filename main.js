@@ -198,8 +198,11 @@ function progressBarUpdate(elemId) {
 
 //CHART STUFF
 function chartIt(x, y) {
-  var ctx = document.getElementById("myChart").getContext("2d");
-  var myChart = new Chart(ctx, {
+  let colorSelect = (y) => {
+    return y[y.length - 1] > y[0] ? "red" : "rgba(0, 230, 64, 1)";
+  };
+  let ctx = document.getElementById("myChart").getContext("2d");
+  let myChart = new Chart(ctx, {
     type: "line",
     data: {
       labels: x,
@@ -207,17 +210,36 @@ function chartIt(x, y) {
         {
           label: "Closing Price",
           data: y,
-          borderColor: ["rgba(255, 99, 132, 1)"],
-          pointHitRadius: 3,
+          borderColor: colorSelect,
+          pointHitRadius: 100,
+          pointRadius: 0,
           pointStyle: "line",
           pointRotation: 90,
-          borderWidth: 1,
-          lineTension: 0,
+          hoverRadius: 0,
+          borderWidth: 2,
+          lineTension: 0.1,
           fill: false,
         },
       ],
     },
     options: {
+      interaction: {
+        mode: "nearest",
+        axis: "y",
+      },
+      layout: {
+        padding: {
+          left: 50,
+          right: 0,
+          top: 0,
+          bottom: 0,
+        },
+      },
+      title: {
+        display: true,
+        text: `Closing price from ${x[0]} - ${x[x.length - 1]}`, //Beginning of dates to end of dates
+        fontFamily: "Quicksand",
+      },
       scales: {
         yAxes: [
           {
