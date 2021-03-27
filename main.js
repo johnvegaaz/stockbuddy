@@ -105,6 +105,7 @@ function tableToggle() {
     hiddenTable.hidden = false;
     toggleButton.className = "btn btn-danger";
     toggleButton.innerHTML = "Hide Table";
+    window.scrollTo(0, document.body.scrollHeight);
   } else {
     hiddenTable.hidden = true;
     toggleButton.className = "btn btn-primary";
@@ -229,7 +230,7 @@ function chartIt(x, y) {
       },
       layout: {
         padding: {
-          left: 50,
+          left: 0,
           right: 0,
           top: 0,
           bottom: 0,
