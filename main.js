@@ -172,7 +172,7 @@ function chartIt(dates, prices) {
   let colorSelect;
   document.getElementById("tickerSymbol").innerHTML = returnVal(tickerId);
 
-  if (prices[prices.length - 1] > prices[0]) {
+  if (Number(prices[prices.length - 1]) > Number(prices[0])) {
     colorSelect = "rgba(0, 230, 64, 1)";
   } else {
     colorSelect = "red";
@@ -216,7 +216,7 @@ function chartIt(dates, prices) {
         },
         title: {
           display: true,
-          text: `Closing price from ${datesFormatted[0]} - ${
+          text: `Closing prices from ${datesFormatted[0]} - ${
             datesFormatted[datesFormatted.length - 1]
           }`, //Beginning of dates to end of dates
           fontFamily: "Quicksand",
@@ -234,6 +234,9 @@ function chartIt(dates, prices) {
     });
   } else {
     myChart.data.labels = datesFormatted;
+    myChart.options.title.text = `Closing prices from ${datesFormatted[0]} - ${
+      datesFormatted[datesFormatted.length - 1]
+    }`;
     myChart.data.datasets.forEach((dataset) => {
       dataset.data = prices;
       dataset.borderColor = colorSelect;
