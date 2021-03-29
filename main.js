@@ -1,3 +1,5 @@
+//Form Validation
+//performCheck checks to ensure that both fields are filled out prior to execution
 function performCheck(ticker, key) {
   if (ticker == "" || key == "") {
     alert("Please fill in both fields!");
@@ -7,14 +9,16 @@ function performCheck(ticker, key) {
   }
 }
 
+//Feeds into performCheck to let the function receive data from the fields and to return blank value to validate if it was filled in
 function returnVal(formId) {
   if (document.getElementById(formId).value == null) {
     return "";
   } else {
-    return document.getElementById(formId).value;
+    return document.getElementById(formId).value.toUpperCase();
   }
 }
 
+//Makes API call using field data
 function returnCallUrl(ticker, key) {
   return (
     "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=" +
@@ -22,21 +26,6 @@ function returnCallUrl(ticker, key) {
     "&apikey=" +
     key
   );
-}
-
-function performFetch(ticker, key) {
-  if (performCheck(returnVal(ticker), returnVal(key))) {
-    fetch(returnCallUrl(returnVal(ticker), returnVal(key)))
-      .then((response) => response.json())
-      .then((data) => responseHandle(data))
-      .then(() => (document.getElementById("output").scrollTop = 0));
-  }
-}
-
-function responseHandle(resObj) {
-  console.log(resObj);
-  console.log(Object.keys(resObj)[1]);
-  loopData(resObj);
 }
 
 async function loopData(data) {
@@ -50,11 +39,11 @@ async function loopData(data) {
     //console.log(data[seriesType][date]);
     //console.log(date);
     let date = new Date(item + "T00:00:00");
-    dateArr.push(date.formatMMDDYYYY());
+    dateArr.push(date /*.formatMMDDYYYY()*/);
     let open = data[seriesType][item]["1. open"];
-    openArr.push(open);
+    openArr.push(parseFloat(open).toFixed(2));
     let close = data[seriesType][item]["4. close"];
-    closeArr.push(close);
+    closeArr.push(parseFloat(close).toFixed(2));
     let volume = data[seriesType][item]["5. volume"];
     volumeArr.push(volume);
     appendTrRow(tableId, date, open, close, volume);
@@ -94,10 +83,6 @@ function appendTrRow(tableId, date, open, close, volume) {
     .appendChild(createTableChild(date, open, close, volume));
 }
 
-function buttonSubmit() {
-  progressBarUpdate(progressId);
-}
-
 function tableToggle() {
   let hiddenTable = document.getElementById("table");
   let toggleButton = document.getElementById("tableDisplayButton");
@@ -112,22 +97,6 @@ function tableToggle() {
     toggleButton.innerHTML = "Display Table";
   }
 }
-
-let tickerId = "tickerForm";
-let keyId = "keyForm";
-let tableId = "outputTable";
-let progressId = "progressElement";
-
-window.onload = function () {
-  let tickerField = document.getElementById(tickerId);
-  if (tickerField) {
-    tickerField.addEventListener("keypress", function (e) {
-      if (e.key === "Enter") {
-        buttonSubmit();
-      }
-    });
-  }
-};
 
 const days = [
   "Sunday",
@@ -198,58 +167,138 @@ function progressBarUpdate(elemId) {
 }
 
 //CHART STUFF
-function chartIt(x, y) {
-  let colorSelect = (y) => {
-    return y[y.length - 1] > y[0] ? "red" : "rgba(0, 230, 64, 1)";
-  };
-  let ctx = document.getElementById("myChart").getContext("2d");
-  let myChart = new Chart(ctx, {
-    type: "line",
-    data: {
-      labels: x,
-      datasets: [
-        {
-          label: "Closing Price",
-          data: y,
-          borderColor: colorSelect,
-          pointHitRadius: 100,
-          pointRadius: 0,
-          pointStyle: "line",
-          pointRotation: 90,
-          hoverRadius: 0,
-          borderWidth: 2,
-          lineTension: 0.1,
-          fill: false,
-        },
-      ],
-    },
-    options: {
-      interaction: {
-        mode: "nearest",
-        axis: "y",
-      },
-      layout: {
-        padding: {
-          left: 0,
-          right: 0,
-          top: 0,
-          bottom: 0,
-        },
-      },
-      title: {
-        display: true,
-        text: `Closing price from ${x[0]} - ${x[x.length - 1]}`, //Beginning of dates to end of dates
-        fontFamily: "Quicksand",
-      },
-      scales: {
-        yAxes: [
+function chartIt(dates, prices) {
+  let datesFormatted = dates.map((date) => date.formatMMDDYYYY());
+  let colorSelect;
+  document.getElementById("tickerSymbol").innerHTML = returnVal(tickerId);
+
+  if (prices[prices.length - 1] > prices[0]) {
+    colorSelect = "rgba(0, 230, 64, 1)";
+  } else {
+    colorSelect = "red";
+  }
+  console.log(colorSelect);
+
+  if (myChart == undefined) {
+    let ctx = document.getElementById("lineChart").getContext("2d");
+    myChart = new Chart(ctx, {
+      type: "line",
+      data: {
+        labels: datesFormatted,
+        datasets: [
           {
-            ticks: {
-              beginAtZero: false,
-            },
+            label: "Closing Price",
+            data: prices,
+            borderColor: colorSelect,
+            pointHitRadius: 100,
+            pointRadius: 0,
+            pointStyle: "line",
+            pointRotation: 90,
+            hoverRadius: 0,
+            borderWidth: 2,
+            lineTension: 0.1,
+            fill: false,
           },
         ],
       },
-    },
-  });
+      options: {
+        interaction: {
+          mode: "nearest",
+          axis: "y",
+        },
+        layout: {
+          padding: {
+            left: 0,
+            right: 0,
+            top: 0,
+            bottom: 0,
+          },
+        },
+        title: {
+          display: true,
+          text: `Closing price from ${datesFormatted[0]} - ${
+            datesFormatted[datesFormatted.length - 1]
+          }`, //Beginning of dates to end of dates
+          fontFamily: "Quicksand",
+        },
+        scales: {
+          yAxes: [
+            {
+              ticks: {
+                beginAtZero: false,
+              },
+            },
+          ],
+        },
+      },
+    });
+  } else {
+    myChart.data.labels = datesFormatted;
+    myChart.data.datasets.forEach((dataset) => {
+      dataset.data = prices;
+      dataset.borderColor = colorSelect;
+    });
+  }
+  myChart.update();
+  document.getElementById("lineChart").hidden = false;
+  document.getElementById("analysisDiv").hidden = false;
+  document.getElementById("analysisTitle").hidden = false;
+  document.getElementById("analysisTitle").innerHTML = "Data Analysis";
+  document.getElementById("startPrice").hidden = false;
+  document.getElementById("startPrice").innerHTML = `Start: $${prices[0]}`;
+  document.getElementById("closePrice").hidden = false;
+  document.getElementById("closePrice").innerHTML = `End:  $${
+    prices[prices.length - 1]
+  }`;
+  let percentChange =
+    ((prices[prices.length - 1] - prices[0]) / prices[0]) * 100;
+  let gainLoss = "Gain";
+  if (percentChange < 0) {
+    percentChange = percentChange * -1;
+    gainLoss = "Loss";
+  }
+  document.getElementById("percentChange").hidden = false;
+  document.getElementById(
+    "percentChange"
+  ).innerHTML = `${gainLoss}: ${parseFloat(percentChange).toFixed(2)}%`;
 }
+
+//ACTUAL EXECUTING SCRIPTS/BEGINNING POINTS
+let tickerId = "tickerForm";
+let keyId = "keyForm";
+let tableId = "outputTable";
+let progressId = "progressElement";
+
+//Chart Variable initialized here to modify it post creation
+let myChart;
+
+let devMode = true;
+let devTicker = "TSLA";
+let devKey = "DEMO";
+
+function buttonSubmit() {
+  document.getElementById("tickerSymbol").innerHTML = "";
+  document.getElementById("lineChart").hidden = true;
+  document.getElementById("analysisDiv").hidden = true;
+  document.getElementById("analysisTitle").hidden = true;
+  document.getElementById("startPrice").hidden = true;
+  document.getElementById("closePrice").hidden = true;
+  document.getElementById("percentChange").hidden = true;
+  progressBarUpdate(progressId);
+}
+
+window.onload = () => {
+  let tickerField = document.getElementById(tickerId);
+  let keyField = document.getElementById(keyId);
+  if (tickerField) {
+    tickerField.addEventListener("keypress", function (e) {
+      if (e.key === "Enter") {
+        buttonSubmit();
+      }
+    });
+  }
+  if (devMode) {
+    tickerField.value = devTicker;
+    keyField.value = devKey;
+  }
+};

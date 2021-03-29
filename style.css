@@ -3,7 +3,7 @@
 }
 
 #output {
-  margin-top: 15px;
+  margin: 20px 0;
   height: 250px;
   overflow-y: auto;
 }
@@ -23,4 +23,16 @@
 
 #progressToggle {
   margin: 15px;
+}
+
+#tableDisplayButton {
+  margin: 10px 0;
+}
+
+#analysisDiv {
+  margin: 20px 0;
+}
+
+.spacer {
+  margin: 10px 0;
 }

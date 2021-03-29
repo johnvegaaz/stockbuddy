@@ -102,6 +102,7 @@
           Launch Rocket
         </button>
       </div>
+      <!--Progress Bar-->
       <div class="progress" hidden id="progressToggle">
         <div
           id="progressElement"
@@ -115,8 +116,19 @@
           Polishing diamond hands...
         </div>
       </div>
-
-      <canvas id="myChart" width="400" height="275"></canvas>
+      <!--Title and Line Chart Data-->
+      <h2 id="tickerSymbol"></h3>
+      <canvas id="lineChart" width="200" height="137"></canvas>
+      <!--Output Analysis Data-->
+      <div id="analysisDiv">
+        <h3 id="analysisTitle"></h4>
+          <div class="spacer">
+            <h5 id="startPrice"></h4>
+            <h5 id="closePrice"></h4>
+            <h5 id="percentChange"></h4>
+          </div>
+      </div>
+      <!--Output Table Data-->
       <button
         type="button"
         class="btn btn-primary"
@@ -139,6 +151,8 @@
           <tbody id="outputTable"></tbody>
         </table>
       </div>
+      <!--Output Analysis Data-->
     </div>
+    <!--End of container-->
   </body>
 </html>
