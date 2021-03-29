@@ -277,7 +277,7 @@ let myChart;
 
 let devMode = true;
 let devTicker = "TSLA";
-let devKey = "DEMO";
+let devKey = "TPTUBB13566K7MHN";
 
 function buttonSubmit() {
   document.getElementById("tickerSymbol").innerHTML = "";
