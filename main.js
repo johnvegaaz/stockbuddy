@@ -273,7 +273,7 @@ let progressId = "progressElement";
 //Chart Variable initialized here to modify it post creation
 let myChart;
 
-let devMode = true;
+let devMode = false;
 let devTicker = "TSLA";
 let devKey = "TPTUBB13566K7MHN";
 
