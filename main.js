@@ -117,9 +117,7 @@ function numberWithCommas(x) {
 }
 
 async function executePull() {
-  const response = await fetch(
-    returnCallUrl(returnVal(tickerId), returnVal(keyId))
-  );
+  const response = await fetch(returnCallUrl(returnVal(tickerId), devKey));
   const data = await response.json();
   //Not the best idea but I want to push the appropriate values into arrays from the loopData function, later on I will add in a better higher order array function/method
   let [dateArr, openArr, closeArr, volumeArr] = await loopData(data);
@@ -302,6 +300,5 @@ window.onload = () => {
   }
   if (devMode) {
     tickerField.value = devTicker;
-    keyField.value = devKey;
   }
 };

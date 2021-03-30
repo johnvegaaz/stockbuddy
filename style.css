@@ -40,3 +40,9 @@
 .spacer {
   margin: 10px 0;
 }
+
+#launchButton {
+  position: relative;
+  right: 0;
+  bottom: 0;
+}
