@@ -220,6 +220,14 @@ function chartIt(dates, prices) {
           fontFamily: "Quicksand",
         },
         scales: {
+          xAxes: [
+            {
+              display: false,
+              ticks: {
+                beginAtZero: false,
+              },
+            },
+          ],
           yAxes: [
             {
               ticks: {
@@ -244,7 +252,7 @@ function chartIt(dates, prices) {
   document.getElementById("lineChart").hidden = false;
   document.getElementById("analysisDiv").hidden = false;
   document.getElementById("analysisTitle").hidden = false;
-  document.getElementById("analysisTitle").innerHTML = "Data Analysis";
+  document.getElementById("analysisTitle").innerHTML = "Technical Analysis";
   document.getElementById("startPrice").hidden = false;
   document.getElementById("startPrice").innerHTML = `Start: $${prices[0]}`;
   document.getElementById("closePrice").hidden = false;
