@@ -131,6 +131,9 @@ async function executePull() {
 }
 
 function progressBarUpdate(elemId) {
+  document.getElementById(tickerId).value = document
+    .getElementById(tickerId)
+    .value.toUpperCase();
   let hiddenTable = document.getElementById("table");
   let toggleButton = document.getElementById("tableDisplayButton");
   hiddenTable.hidden = true;
