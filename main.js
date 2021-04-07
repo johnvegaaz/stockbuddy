@@ -61,8 +61,12 @@ async function loopData(data) {
 function createTableChild(date, open, close, volume) {
   let wrapper = document.createElement("tr");
   wrapper.appendChild(createTableCell(date.formatMMDDYYYY()));
-  wrapper.appendChild(createTableCell(parseFloat(open).toFixed(2)));
-  wrapper.appendChild(createTableCell(parseFloat(close).toFixed(2)));
+  wrapper.appendChild(
+    createTableCell(numberWithCommas(parseFloat(open).toFixed(2)))
+  );
+  wrapper.appendChild(
+    createTableCell(numberWithCommas(parseFloat(close).toFixed(2)))
+  );
   wrapper.appendChild(createTableCell(numberWithCommas(volume)));
   return wrapper;
 }
@@ -173,7 +177,7 @@ function chartIt(dates, prices) {
   let colorSelect;
   document.getElementById("tickerSymbol").innerHTML = `${returnVal(
     tickerId
-  )} - $${prices[prices.length - 1]}`;
+  )} - $${numberWithCommas(prices[prices.length - 1])}`;
 
   if (Number(prices[prices.length - 1]) > Number(prices[0])) {
     colorSelect = "rgba(0, 230, 64, 1)";
@@ -259,11 +263,13 @@ function chartIt(dates, prices) {
   document.getElementById("analysisTitle").hidden = false;
   document.getElementById("analysisTitle").innerHTML = "Technical Analysis";
   document.getElementById("startPrice").hidden = false;
-  document.getElementById("startPrice").innerHTML = `Start: $${prices[0]}`;
+  document.getElementById("startPrice").innerHTML = `Start: $${numberWithCommas(
+    prices[0]
+  )}`;
   document.getElementById("closePrice").hidden = false;
-  document.getElementById("closePrice").innerHTML = `End:  $${
+  document.getElementById("closePrice").innerHTML = `End:  $${numberWithCommas(
     prices[prices.length - 1]
-  }`;
+  )}`;
   let percentChange =
     ((prices[prices.length - 1] - prices[0]) / prices[0]) * 100;
   let gainLoss = "Gain";
