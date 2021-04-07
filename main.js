@@ -171,7 +171,9 @@ function progressBarUpdate(elemId) {
 function chartIt(dates, prices) {
   let datesFormatted = dates.map((date) => date.formatMMDDYYYY());
   let colorSelect;
-  document.getElementById("tickerSymbol").innerHTML = returnVal(tickerId);
+  document.getElementById("tickerSymbol").innerHTML = `${returnVal(
+    tickerId
+  )} - $${prices[prices.length - 1]}`;
 
   if (Number(prices[prices.length - 1]) > Number(prices[0])) {
     colorSelect = "rgba(0, 230, 64, 1)";
