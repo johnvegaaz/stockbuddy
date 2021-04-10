@@ -1,8 +1,8 @@
 //Form Validation
 //performCheck checks to ensure that both fields are filled out prior to execution
-function performCheck(ticker, key) {
-  if (ticker == "" || key == "") {
-    alert("Please fill in both fields!");
+function performCheck(ticker) {
+  if (ticker == "") {
+    alert("Please fill ticker field!");
     return false;
   } else {
     return true;
@@ -359,22 +359,24 @@ let devTicker = "TSLA";
 let devKey = "TPTUBB13566K7MHN";
 
 function buttonSubmit() {
-  document.getElementById("tickerSymbol").innerHTML = "";
-  document.getElementById("lineChart").hidden = true;
-  document.getElementById("analysisDiv").hidden = true;
-  document.getElementById("analysisTitle").hidden = true;
-  document.getElementById("startPrice").hidden = true;
-  document.getElementById("closePrice").hidden = true;
-  document.getElementById("percentChange").hidden = true;
-  document.getElementById("avgPerDay").hidden = true;
-  document.getElementById("avgBreak").hidden = true;
-  document.getElementById("avgLoss").hidden = true;
-  document.getElementById("avgGain").hidden = true;
-  document.getElementById("breakPct").hidden = true;
-  document.getElementById("lossPct").hidden = true;
-  document.getElementById("gainPct").hidden = true;
-  document.getElementById("totalPct").hidden = true;
-  progressBarUpdate(progressId);
+  if (performCheck(returnVal(tickerId))) {
+    document.getElementById("tickerSymbol").innerHTML = "";
+    document.getElementById("lineChart").hidden = true;
+    document.getElementById("analysisDiv").hidden = true;
+    document.getElementById("analysisTitle").hidden = true;
+    document.getElementById("startPrice").hidden = true;
+    document.getElementById("closePrice").hidden = true;
+    document.getElementById("percentChange").hidden = true;
+    document.getElementById("avgPerDay").hidden = true;
+    document.getElementById("avgBreak").hidden = true;
+    document.getElementById("avgLoss").hidden = true;
+    document.getElementById("avgGain").hidden = true;
+    document.getElementById("breakPct").hidden = true;
+    document.getElementById("lossPct").hidden = true;
+    document.getElementById("gainPct").hidden = true;
+    document.getElementById("totalPct").hidden = true;
+    progressBarUpdate(progressId);
+  }
 }
 
 window.onload = () => {
