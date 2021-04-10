@@ -29,8 +29,13 @@
   <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <div class="container-fluid">
-        
-        <a class="navbar-brand" href="index.html"><img src="./img/stockbot/stockbot_icon_1.png" alt="stockbot icon" width="37rem"> StockBot</a>
+        <a class="navbar-brand" href="index.html"
+          ><img
+            src="./img/stockbot/stockbot_icon_1.png"
+            alt="stockbot icon"
+            width="37rem"
+          />StockBot</a
+        >
         <button
           class="navbar-toggler"
           type="button"
@@ -55,20 +60,22 @@
     </nav>
     <div class="container">
       <div class="row justify-content-md-center" id="keyTickerForm">
-        
         <div class="col-7">
-          <label for="formGroupExampleInput2" class="form-label" style="margin-top: .6rem;"
+          <label
+            for="formGroupExampleInput2"
+            class="form-label"
+            style="margin-top: 0.6rem"
             >Ticker</label
           >
           <input
-          type="text"
-          class="form-control"
-          id="tickerForm"
-          placeholder="GME, SPY, TSLA, etc."
-          required
-          tabindex="2"
-        />
-      </div>
+            type="text"
+            class="form-control"
+            id="tickerForm"
+            placeholder="GME, SPY, TSLA, etc."
+            required
+            tabindex="2"
+          />
+        </div>
         <div class="col-auto">
           <!--Button to Launch Rocket-->
           <button
@@ -77,13 +84,13 @@
             id="launchButton"
             onclick="buttonSubmit()"
             tabindex="3"
-            style="font-size:.9rem; margin-top: 2.7rem;"
+            style="font-size: 0.9rem; margin-top: 2.7rem"
           >
             Launch Rocket
           </button>
         </div>
       </div>
-      
+
       <!--Progress Bar-->
       <div class="progress" hidden id="progressToggle">
         <div
@@ -99,16 +106,30 @@
         </div>
       </div>
       <!--Title and Line Chart Data-->
-      <h2 id="tickerSymbol"></h3>
+      <h2 id="tickerSymbol"></h2>
       <canvas id="lineChart" width="200" height="137"></canvas>
       <!--Output Analysis Data-->
       <div id="analysisDiv">
-        <h3 id="analysisTitle"></h4>
-          <div class="spacer">
-            <h5 id="startPrice"></h4>
-            <h5 id="closePrice"></h4>
-            <h5 id="percentChange"></h4>
-          </div>
+        <h3 id="analysisTitle"></h3>
+        <div class="spacer">
+          <h5 id="startPrice"></h5>
+          <h5 id="closePrice"></h5>
+          <h5 id="percentChange"></h5>
+        </div>
+        <br />
+        <div class="spacer">
+          <h5 id="avgPerDay"></h5>
+          <h5 id="avgBreak"></h5>
+          <h5 id="avgLoss"></h5>
+          <h5 id="avgGain"></h5>
+        </div>
+        <br />
+        <div class="spacer">
+          <h5 id="breakPct"></h5>
+          <h5 id="lossPct"></h5>
+          <h5 id="gainPct"></h5>
+          <h5 id="totalPct"></h5>
+        </div>
       </div>
       <!--Output Table Data-->
       <button

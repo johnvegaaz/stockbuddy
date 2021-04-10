@@ -175,6 +175,36 @@ function progressBarUpdate(elemId) {
 function chartIt(dates, prices) {
   let datesFormatted = dates.map((date) => date.formatMMDDYYYY());
   let colorSelect;
+  let avgArr = prices.map(
+    (currentVal, index, array) => array[index + 1] - currentVal
+  );
+  avgArr.pop(); //Removes not a number for last avg
+
+  avgLossArr = avgArr.filter((item) => Number(item) < 0);
+  avgGainArr = avgArr.filter((item) => Number(item) > 0);
+  breakArr = avgArr.filter((item) => Number(item) == 0);
+
+  const reducer = (accumulator, currentValue) => accumulator + currentValue;
+  avgDaily = avgArr.reduce(reducer) / avgArr.length;
+  if (breakArr.length != 0) {
+    avgBreak = breakArr.reduce(reducer) / avgArr.length;
+  } else {
+    avgBreak = 0;
+  }
+  avgLoss = avgLossArr.reduce(reducer) / avgLossArr.length;
+  avgGain = avgGainArr.reduce(reducer) / avgGainArr.length;
+
+  breakPct = `${parseFloat((breakArr.length / avgArr.length) * 100).toFixed(
+    2
+  )}%`;
+  lossPct = `${parseFloat((avgLossArr.length / avgArr.length) * 100).toFixed(
+    2
+  )}%`;
+  gainPct = `${parseFloat((avgGainArr.length / avgArr.length) * 100).toFixed(
+    2
+  )}%`;
+  totalPct = `${parseFloat((avgArr.length / avgArr.length) * 100).toFixed(2)}%`;
+
   document.getElementById("tickerSymbol").innerHTML = `${returnVal(
     tickerId
   )} - $${numberWithCommas(prices[prices.length - 1])}`;
@@ -270,6 +300,38 @@ function chartIt(dates, prices) {
   document.getElementById("closePrice").innerHTML = `End:  $${numberWithCommas(
     prices[prices.length - 1]
   )}`;
+  document.getElementById("avgPerDay").hidden = false;
+  document.getElementById(
+    "avgPerDay"
+  ).innerHTML = `Average Daily: $${parseFloat(avgDaily).toFixed(2)}`;
+  document.getElementById("avgBreak").hidden = false;
+  document.getElementById("avgBreak").innerHTML = `Average Break: $${parseFloat(
+    avgBreak
+  ).toFixed(2)}`;
+  document.getElementById("avgLoss").hidden = false;
+  document.getElementById("avgLoss").innerHTML = `Average Loss: $${parseFloat(
+    avgLoss
+  ).toFixed(2)}`;
+  document.getElementById("avgGain").hidden = false;
+  document.getElementById("avgGain").innerHTML = `Average Gain: $${parseFloat(
+    avgGain
+  ).toFixed(2)}`;
+  document.getElementById("breakPct").hidden = false;
+  document.getElementById(
+    "breakPct"
+  ).innerHTML = `Break Percentage: ${breakPct} Breaks: ${breakArr.length}`;
+  document.getElementById("lossPct").hidden = false;
+  document.getElementById(
+    "lossPct"
+  ).innerHTML = `Loss Percentage: ${lossPct} Losses: ${avgLossArr.length}`;
+  document.getElementById("gainPct").hidden = false;
+  document.getElementById(
+    "gainPct"
+  ).innerHTML = `Gain Percentage: ${gainPct} Gains: ${avgGainArr.length}`;
+  document.getElementById("totalPct").hidden = false;
+  document.getElementById(
+    "totalPct"
+  ).innerHTML = `Total Percentage: ${totalPct} Total: ${avgArr.length}`;
   let percentChange =
     ((prices[prices.length - 1] - prices[0]) / prices[0]) * 100;
   let gainLoss = "Gain";
@@ -304,6 +366,14 @@ function buttonSubmit() {
   document.getElementById("startPrice").hidden = true;
   document.getElementById("closePrice").hidden = true;
   document.getElementById("percentChange").hidden = true;
+  document.getElementById("avgPerDay").hidden = true;
+  document.getElementById("avgBreak").hidden = true;
+  document.getElementById("avgLoss").hidden = true;
+  document.getElementById("avgGain").hidden = true;
+  document.getElementById("breakPct").hidden = true;
+  document.getElementById("lossPct").hidden = true;
+  document.getElementById("gainPct").hidden = true;
+  document.getElementById("totalPct").hidden = true;
   progressBarUpdate(progressId);
 }
 
